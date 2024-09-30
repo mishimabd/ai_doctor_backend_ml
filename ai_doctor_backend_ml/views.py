@@ -7,7 +7,7 @@ from keras.preprocessing import image
 from django.core.files.storage import default_storage
 
 # Load the model once when the server starts
-model = load_model('model_vgg19.h5')
+model = load_model('./model_vgg19.h5')
 
 IMAGE_SIZE = (224, 224)
 
