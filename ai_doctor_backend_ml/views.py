@@ -35,6 +35,20 @@ def predict_image(request):
         predictions = model.predict(img_array)
         predicted_class = np.argmax(predictions)
         confidence = np.max(predictions) * 100
+	
+	 # Class descriptions
+    	class_labels = {
+        	0: "Слияние стимуляционного и нормального ритма (Fusion of paced and normal beat)",
+        	1: "Слияние желудочкового и нормального ритма (Fusion of ventricular and normal beat)",
+        	2: "Нормальный ритм (Normal beat)",
+        	3: "Неопределенный или неизвестный тип (Unclassified beat)",
+        	4: "Наджелудочковая экстрасистола (Supraventricular premature beat)",
+       		5: "Преждевременная желудочковая экстрасистола (Ventricular premature contraction)"
+    		}
+		
+	# Get the description of the predicted class
+    	predicted_class_description = class_labels.get(predicted_class, "Unknown")
+
 
         # Clean up the file after processing
         if default_storage.exists(file_path):
@@ -43,6 +57,7 @@ def predict_image(request):
         # Respond with the predicted class and confidence score
         return JsonResponse({
             "predicted_class": int(predicted_class),
+		"predicted_class_description": predicted_class_description,
             "confidence": f"{confidence:.2f}%"
         })
 
